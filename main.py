@@ -31,15 +31,16 @@
 from market import MarketData
 from trading import TradingSimulator
 
+# Create objects
 market = MarketData("data.csv")
-sim = TradingSimulator()
+sim = TradingSimulator()   # ⚠️ THIS LINE WAS MISSING OR WRONG
 
 print("Starting Trading Simulation...\n")
 
 while True:
     current_price = market.get_current_price()
 
-    # Simple dummy strategy:
+    # Strategy
     if current_price < 110:
         sim.buy(current_price, 1)
     elif current_price > 115:
@@ -50,7 +51,13 @@ while True:
     if not market.next_day():
         break
 
-print("Simulation Finished.\n")
+print("\nFinal Results:")
 
 print("Final Portfolio Value:",
       sim.get_portfolio_value(market.get_current_price()))
+
+print("Total Profit:",
+      sim.get_total_profit(market.get_current_price()))
+
+print("Total Trades:",
+      sim.total_trades)
