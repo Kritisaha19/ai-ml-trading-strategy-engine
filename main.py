@@ -27,7 +27,7 @@
 # print("\nSimulation Finished.")
 
 # --------------------------------------------
-
+from strategy import generate_signal
 from market import MarketData
 from trading import TradingSimulator
 
@@ -36,16 +36,19 @@ market = MarketData("data.csv")
 sim = TradingSimulator()   # ⚠️ THIS LINE WAS MISSING OR WRONG
 
 print("Starting Trading Simulation...\n")
-
+price_history = []
 while True:
     current_price = market.get_current_price()
+    price_history.append(current_price)
 
-    # Strategy
-    if current_price < 110:
+    signal = generate_signal(price_history)
+
+    if signal == "BUY":
         sim.buy(current_price, 1)
-    elif current_price > 115:
+    elif signal == "SELL":
         sim.sell(current_price, 1)
 
+    print("Signal:", signal)
     sim.get_status(current_price)
 
     if not market.next_day():
